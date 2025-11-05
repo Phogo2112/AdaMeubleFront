@@ -1,16 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { AuthProvider } from "./context/AuthProvider";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
 
-function App() {
-  const [message, setMessage] = useState("");
+export default function App() {
+  const [showRegister, setShowRegister] = useState(false);
 
-  useEffect(() => {
-    fetch("http://localhost:8080/api/hello")
-      .then((response) => response.text())
-      .then((data) => setMessage(data))
-      .catch((error) => console.error("Erreur fetch API :", error));
-  }, []);
-
-  return <div></div>;
+  return (
+    <AuthProvider>
+      {showRegister ? (
+        <RegisterPage switchToLogin={() => setShowRegister(false)} />
+      ) : (
+        <LoginPage switchToRegister={() => setShowRegister(true)} />
+      )}
+    </AuthProvider>
+  );
 }
-
-export default App;
