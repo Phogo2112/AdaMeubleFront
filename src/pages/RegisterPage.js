@@ -1,58 +1,78 @@
+// @ts-nocheck
 import React, { useState } from "react";
+import { useAuth } from "../context/AuthContext";
 
-export default function RegisterPage({ switchToLogin }) {
-  const [form, setForm] = useState({
-    firstname: "",
-    lastname: "",
-    email: "",
-    password: "",
-    address: "",
-  });
+export function RegisterPage() {
+  const { login } = useAuth(); // pour connecter l'utilisateur directement après inscription
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // 🚨 Validation simple côté front
+    if (!firstname || !lastname || !email || !password) {
+      setError("Tous les champs sont obligatoires");
+      return;
+    }
+
+    // ✅ Simulation d'inscription (fake backend)
+    const newUser = {
+      id: Date.now(), // Identifiant simulé
+      firstname,
+      lastname,
+      email,
+    };
+
+    // ✅ Stocker le user en local (comme si l’API avait répondu)
+    localStorage.setItem("user", JSON.stringify(newUser));
+
+    // ✅ Connexion automatique après inscription
+    login(newUser);
+
+    setSuccess("Compte créé avec succès !");
+    setError("");
+    // Option : redirection auto
+    // window.location.href = "/";
+  };
 
   return (
     <div>
-      <h2>Inscription</h2>
-      <form>
+      <h2>Créer un compte</h2>
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      {success && <p style={{ color: "green" }}>{success}</p>}
+
+      <form onSubmit={handleSubmit}>
         <input
           type="text"
           placeholder="Prénom"
-          value={form.firstname}
-          onChange={(e) => setForm({ ...form, firstname: e.target.value })}
+          onChange={(e) => setFirstname(e.target.value)}
         />
-        <br />
         <input
           type="text"
           placeholder="Nom"
-          value={form.lastname}
-          onChange={(e) => setForm({ ...form, lastname: e.target.value })}
+          onChange={(e) => setLastname(e.target.value)}
         />
-        <br />
         <input
           type="email"
           placeholder="Email"
-          value={form.email}
-          onChange={(e) => setForm({ ...form, email: e.target.value })}
+          onChange={(e) => setEmail(e.target.value)}
         />
-        <br />
         <input
           type="password"
           placeholder="Mot de passe"
-          value={form.password}
-          onChange={(e) => setForm({ ...form, password: e.target.value })}
+          onChange={(e) => setPassword(e.target.value)}
         />
-        <br />
-        <input
-          type="text"
-          placeholder="Adresse"
-          value={form.address}
-          onChange={(e) => setForm({ ...form, address: e.target.value })}
-        />
-        <br />
-        <button type="submit">S'inscrire</button>
+
+        <button type="submit">S’inscrire</button>
       </form>
 
       <p>
-        Déjà un compte ? <button onClick={switchToLogin}>Se connecter</button>
+        Déjà un compte ? <a href="/login">Connectez-vous ici</a>
       </p>
     </div>
   );

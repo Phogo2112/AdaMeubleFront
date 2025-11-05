@@ -1,29 +1,47 @@
-import React, { useState } from "react";
-import { AuthProvider } from "./context/AuthProvider";
-import { useAuth } from "./context/useAuth";
-import LoginPage from "./pages/LoginPage.js";
-import RegisterPage from "./pages/RegisterPage.js";
-import HomePage from "./pages/HomePage.js";
+// @ts-nocheck
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import { AuthProvider, useAuth } from "./context/AuthContext";
+import HomePage from "./pages/HomePage";
+import { LoginPage } from "./pages/LoginPage";
+import { RegisterPage } from "./pages/RegisterPage";
 
-function AppContent() {
-  const { isAuthenticated } = useAuth();
-  const [showRegister, setShowRegister] = useState(false);
-
-  if (isAuthenticated) {
-    return <HomePage goToLogin={() => setShowRegister(false)} />;
-  }
-
-  return showRegister ? (
-    <RegisterPage switchToLogin={() => setShowRegister(false)} />
-  ) : (
-    <LoginPage switchToRegister={() => setShowRegister(true)} />
-  );
-}
-
-export default function App() {
+function App() {
   return (
     <AuthProvider>
-      <AppContent />
+      <Router>
+        <Content />
+      </Router>
     </AuthProvider>
   );
 }
+
+function Content() {
+  const { user, loading } = useAuth();
+
+  if (loading) return <p>Chargement...</p>;
+
+  return (
+    <Routes>
+      {!user ? (
+        <>
+          <Route path="/" element={<Navigate to="/login" />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+        </>
+      ) : (
+        <>
+          <Route path="/" element={<HomePage />} />
+          <Route path="*" element={<Navigate to="/" />} />
+        </>
+      )}
+    </Routes>
+  );
+}
+
+export default App;
