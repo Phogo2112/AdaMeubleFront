@@ -1,33 +1,24 @@
 // @ts-nocheck
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import api from "../api/axiosConfig";
+import { useNavigate } from "react-router-dom";
 
 export function LoginPage() {
-  const { handleLogin } = useAuth(); // récupère la méthode depuis le contexte
+  const { login } = useAuth();
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
+  const [error, setError] = useState("");
 
-  const submitLogin = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null);
 
     try {
-      const response = await api.post("/auth/login", {
-        email,
-        password,
-      });
-
-      // ✅ Ce que le backend doit renvoyer :
-      // { token: "...", user: { id, name, email, role } }
-      const { token, user } = response.data;
-
-      // ✅ On stocke tout dans le contexte + localStorage
-      handleLogin(user, token);
+      await login(email, password); // ✅ Authentifie l'utilisateur
+      navigate("/"); // ✅ Redirection vers HomePage
     } catch (err) {
+      console.error(err);
       setError("Email ou mot de passe incorrect");
-      console.error("Erreur login:", err);
     }
   };
 
@@ -36,23 +27,20 @@ export function LoginPage() {
       <h2>Connexion</h2>
       {error && <p style={{ color: "red" }}>{error}</p>}
 
-      <form onSubmit={submitLogin}>
+      <form onSubmit={handleSubmit}>
         <input
           type="email"
           placeholder="Email"
           onChange={(e) => setEmail(e.target.value)}
-          value={email}
         />
         <input
           type="password"
           placeholder="Mot de passe"
           onChange={(e) => setPassword(e.target.value)}
-          value={password}
         />
-        <p>
-          Pas encore de compte ? <a href="/register">Inscrivez-vous ici</a>
-        </p>
         <button type="submit">Se connecter</button>
+        <br />
+        Créez un compte ? <a href="/register">Créez votre compte ici</a>
       </form>
     </div>
   );

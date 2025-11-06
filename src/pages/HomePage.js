@@ -1,45 +1,32 @@
 // @ts-nocheck
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
-import api from "../api/axiosConfig";
+import { useNavigate } from "react-router-dom";
 
-export default function HomePage({ goToLogin }) {
-  const { user, logout } = useAuth();
-  const [protectedData, setProtectedData] = useState(null);
+export default function HomePage() {
+  const { user, logout, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+
+  // ✅ Si l'utilisateur n'est pas connecté → on redirige vers /login
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/login");
+    }
+  }, [isAuthenticated, navigate]);
 
   const displayName =
     user?.firstname || user?.name || user?.email || "utilisateur";
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await api.get("/api/users/me");
-        setProtectedData(response.data);
-      } catch (error) {
-        console.error("Erreur API protégée :", error);
-      }
-    };
-    fetchData();
-  }, []);
-
   const logoutUser = () => {
-    logout(); // ✅ utilise la bonne fonction du contexte
-    if (goToLogin) goToLogin();
+    logout();
+    navigate("/login"); // ✅ Retour automatique vers login après déconnexion
   };
 
   return (
     <div>
       <h1>Bienvenue {displayName} 👋</h1>
 
-      {/* ✅ bouton avec la fonction corrigée */}
       <button onClick={logoutUser}>Déconnexion</button>
-
-      {protectedData && (
-        <div style={{ marginTop: "20px" }}>
-          <h2>Données sécurisées récupérées :</h2>
-          <pre>{JSON.stringify(protectedData, null, 2)}</pre>
-        </div>
-      )}
     </div>
   );
 }

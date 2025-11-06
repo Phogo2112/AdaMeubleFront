@@ -1,49 +1,35 @@
+// src/services/authService.js
+import api from "../api/axiosConfig";
+
 export async function login(email, password) {
-  // Simulation — à remplacer quand le backend sera prêt
-  if (email === "test@gmail.com" && password === "1234") {
-    const fakeUser = {
-      id: 1,
-      firstname: "John",
-      email: email,
-    };
-
-    const fakeToken = "FAKE_JWT_TOKEN_123";
-
-    localStorage.setItem("user", JSON.stringify(fakeUser));
-    localStorage.setItem("token", fakeToken);
-
-    return fakeUser; // ✅ On renvoie l'utilisateur
-  }
-
-  // ❌ Si mauvais identifiants :
-  throw new Error("Email ou mot de passe incorrect");
+  const res = await api.post("/auth/login", { email, password });
+  localStorage.setItem("token", res.data.token);
+  localStorage.setItem("user", JSON.stringify(res.data.user));
+  return res.data.user;
 }
 
-// ✅ Simulation d'une inscription
 export async function register(firstname, lastname, email, password) {
-  const newUser = {
-    id: Date.now(),
+  const res = await api.post("/auth/register", {
     firstname,
     lastname,
     email,
-  };
-
-  console.log("📩 Fake register:", newUser);
-
-  // On peut le connecter direct après inscription si on veut
-  localStorage.setItem("user", JSON.stringify(newUser));
-  localStorage.setItem("token", "FAKE_REGISTERED_TOKEN");
-
-  return newUser;
+    password,
+  });
+  localStorage.setItem("token", res.data.token);
+  localStorage.setItem("user", JSON.stringify(res.data.user));
+  return res.data.user;
 }
 
-// ✅ Logout = effacer les infos stockées
 export function logout() {
-  localStorage.removeItem("user");
   localStorage.removeItem("token");
+  localStorage.removeItem("user");
 }
 
-// ✅ Savoir si quelqu’un est connecté
 export function isAuthenticated() {
   return !!localStorage.getItem("token");
+}
+
+export async function getCurrentUser() {
+  const res = await api.get("/auth/me");
+  return res.data;
 }
