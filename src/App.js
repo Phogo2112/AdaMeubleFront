@@ -1,19 +1,46 @@
-import { useEffect, useState } from "react";
+// @ts-nocheck
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import { AuthProvider, useAuth } from "./context/AuthContext";
+import HomePage from "./pages/HomePage";
+import { LoginPage } from "./pages/LoginPage";
+import { RegisterPage } from "./pages/RegisterPage";
 
 function App() {
-  const [message, setMessage] = useState("");
+  return (
+    <AuthProvider>
+      <Router>
+        <Content />
+      </Router>
+    </AuthProvider>
+  );
+}
 
-  useEffect(() => {
-    fetch("http://localhost:8080/api/hello")
-      .then(response => response.text())
-      .then(data => setMessage(data))
-      .catch(error => console.error("Erreur fetch API :", error));
-  }, []);
+function Content() {
+  const { user, loading } = useAuth();
+
+  if (loading) return <p>Chargement...</p>;
 
   return (
-    <div>
-      <h1>{message || "Chargement..."}</h1>
-    </div>
+    <Routes>
+      {!user ? (
+        <>
+          <Route path="*" element={<Navigate to="/login" />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+        </>
+      ) : (
+        <>
+          <Route path="/" element={<HomePage />} />
+          <Route path="*" element={<Navigate to="/" />} />
+        </>
+      )}
+    </Routes>
   );
 }
 
