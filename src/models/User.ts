@@ -1,26 +1,30 @@
-export interface User {
-  id: number;
-  name: string;
-  email: string;
-  role?: "USER" | "ADMIN";
-  createdAt?: string;
-  updatedAt?: string;
-}
+/**
+ * @typedef {Object} User
+ * @property {number} id
+ * @property {string} name
+ * @property {string} email
+ * @property {"USER" | "ADMIN"} [role]
+ * @property {string} [createdAt]
+ * @property {string} [updatedAt]
+ */
 
-export interface AuthResponse {
-  token: string;
-  user?: User;
-  refreshToken?: string;
-  expiresIn?: number;
-}
+/**
+ * @typedef {Object} AuthResponse
+ * @property {string} token
+ * @property {User} [user]
+ * @property {string} [refreshToken]
+ * @property {number} [expiresIn]
+ */
 
-export interface LoginRequest {
-  email: string;
-  password: string;
-}
+/**
+ * @typedef {Object} LoginRequest
+ * @property {string} email
+ * @property {string} password
+ */
 
-export interface RegisterRequest {
-  name: string;
-  email: string;
-  password: string;
-}
+/**
+ * @typedef {Object} RegisterRequest
+ * @property {string} name
+ * @property {string} email
+ * @property {string} password
+ */
