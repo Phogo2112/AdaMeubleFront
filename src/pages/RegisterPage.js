@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 
 export function RegisterPage() {
-  const { login } = useAuth(); // pour connecter l'utilisateur directement après inscription
+  const { register: registerUser } = useAuth(); // <- On récupère la fonction register du context
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
@@ -11,33 +11,22 @@ export function RegisterPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 🚨 Validation simple côté front
     if (!firstname || !lastname || !email || !password) {
       setError("Tous les champs sont obligatoires");
       return;
     }
 
-    // ✅ Simulation d'inscription (fake backend)
-    const newUser = {
-      id: Date.now(), // Identifiant simulé
-      firstname,
-      lastname,
-      email,
-    };
-
-    // ✅ Stocker le user en local (comme si l’API avait répondu)
-    localStorage.setItem("user", JSON.stringify(newUser));
-
-    // ✅ Connexion automatique après inscription
-    login(newUser);
-
-    setSuccess("Compte créé avec succès !");
-    setError("");
-    // Option : redirection auto
-    // window.location.href = "/";
+    try {
+      await registerUser(firstname, lastname, email, password); // ✅ APPEL AU BACKEND
+      setSuccess("Compte créé avec succès !");
+      setError("");
+    } catch (err) {
+      console.error(err);
+      setError("Erreur lors de l'inscription");
+    }
   };
 
   return (
@@ -67,8 +56,7 @@ export function RegisterPage() {
           placeholder="Mot de passe"
           onChange={(e) => setPassword(e.target.value)}
         />
-
-        <button type="submit">S’inscrire</button>
+        <button type="submit">S'inscrire</button>
       </form>
 
       <p>

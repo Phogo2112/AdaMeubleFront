@@ -30,7 +30,7 @@ function Content() {
     <Routes>
       {!user ? (
         <>
-          <Route path="/" element={<Navigate to="/login" />} />
+          <Route path="*" element={<Navigate to="/login" />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
         </>
