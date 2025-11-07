@@ -1,32 +1,37 @@
-// @ts-nocheck
-import React, { useEffect } from "react";
-import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect } from 'react';
+import { getAllProducts } from '../service/ProductService.ts';
+import { getAllCategories } from '../service/CategoryService.ts';
+import { getAllColors } from '../service/ColorService.ts';
+import { getAllMaterials } from '../service/MaterialService.ts';
 
-export default function HomePage() {
-  const { user, logout, isAuthenticated } = useAuth();
-  const navigate = useNavigate();
+function HomePage() {
+    useEffect(() => {
+        // Test des appels API
+        console.log('🧪 Test des appels API...');
 
-  // ✅ Si l'utilisateur n'est pas connecté → on redirige vers /login
-  useEffect(() => {
-    if (!isAuthenticated) {
-      navigate("/login");
-    }
-  }, [isAuthenticated, navigate]);
+        getAllProducts()
+            .then(products => console.log('✅ Products:', products))
+            .catch(error => console.error('❌ Products error:', error));
 
-  const displayName =
-    user?.firstname || user?.name || user?.email || "utilisateur";
+        getAllCategories()
+            .then(categories => console.log('✅ Categories:', categories))
+            .catch(error => console.error('❌ Categories error:', error));
 
-  const logoutUser = () => {
-    logout();
-    navigate("/login"); // ✅ Retour automatique vers login après déconnexion
-  };
+        getAllColors()
+            .then(colors => console.log('✅ Colors:', colors))
+            .catch(error => console.error('❌ Colors error:', error));
 
-  return (
-    <div>
-      <h1>Bienvenue {displayName} 👋</h1>
+        getAllMaterials()
+            .then(materials => console.log('✅ Materials:', materials))
+            .catch(error => console.error('❌ Materials error:', error));
+    }, []);
 
-      <button onClick={logoutUser}>Déconnexion</button>
-    </div>
-  );
+    return (
+        <div>
+            <h1>HomePage - Test API</h1>
+            <p>Ouvre la console (F12) pour voir les résultats !</p>
+        </div>
+    );
 }
+
+export default HomePage;
