@@ -1,17 +1,23 @@
-// @ts-nocheck
 import React, { createContext, useContext, useState, useEffect } from "react";
 import api from "../api/axiosConfig";
+import { User } from "../models/User";
 
-const AuthContext = createContext();
+// Interface pour le contexte
+interface AuthContextType {
+    user: User | null;
+    loading: boolean;
+    login: (email: string, password: string) => Promise<any>;
+    register: (firstname: string, lastname: string, email: string, password: string, address?: string) => Promise<any>;
+    logout: () => void;
+    isAuthenticated: boolean;
+}
+
+// Créer le contexte avec le type
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }) {
-    const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true); // Gère le chargement initial
-
-    /**
-     * Une fonction centralisée pour récupérer les infos de l'utilisateur
-     * et les stocker dans l'état.
-     */
+    const [user, setUser] = useState<User | null>(null);
+    const [loading, setLoading] = useState(true);
     const fetchUser = async () => {
         try {
             const res = await api.get("/auth/me");

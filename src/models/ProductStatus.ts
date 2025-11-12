@@ -1,0 +1,1 @@
+export type ProductStatus = "DISPO" | "VENDU" | "EN_ATTENTE" | "REFUSE";
