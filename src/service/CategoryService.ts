@@ -1,4 +1,4 @@
-import api from '../api/axiosConfig';
+import api from '../api/axiosConfig.ts';
 import { Category } from '../models/Category';
 
 export const getAllCategories = async (): Promise<Category[]> => {

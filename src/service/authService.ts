@@ -1,5 +1,5 @@
 // src/services/authService.js
-import api from "../api/axiosConfig";
+import api from "../api/axiosConfig.ts";
 
 export async function login(email, password) {
   const res = await api.post("/auth/login", { email, password });

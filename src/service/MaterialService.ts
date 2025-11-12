@@ -1,4 +1,4 @@
-import api from '../api/axiosConfig';
+import api from '../api/axiosConfig.ts';
 import { Material } from '../models/Material';
 
 export const getAllMaterials = async (): Promise<Material[]> => {

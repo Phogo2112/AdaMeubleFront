@@ -1,4 +1,4 @@
-import api from '../api/axiosConfig';
+import api from '../api/axiosConfig.ts';
 import { Color } from '../models/Color';
 
 export const getAllColors = async (): Promise<Color[]> => {
