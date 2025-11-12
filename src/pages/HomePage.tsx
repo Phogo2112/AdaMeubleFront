@@ -1,35 +1,73 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { getAllProducts } from '../service/ProductService';
-import { getAllCategories } from '../service/CategoryService';
-import { getAllColors } from '../service/ColorService';
-import { getAllMaterials } from '../service/MaterialService';
+import ProductCard from '../components/ProductCard';
+
+interface Product {
+    id: number;
+    name: string;
+    price: number;
+    imageUrl: string;
+    category: {
+        id: number;
+        name: string;
+    };
+}
 
 function HomePage() {
+    const [products, setProducts] = useState<Product[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
     useEffect(() => {
-        // Test des appels API
-        console.log('🧪 Test des appels API...');
-
         getAllProducts()
-            .then(products => console.log('✅ Products:', products))
-            .catch(error => console.error('❌ Products error:', error));
-
-        getAllCategories()
-            .then(categories => console.log('✅ Categories:', categories))
-            .catch(error => console.error('❌ Categories error:', error));
-
-        getAllColors()
-            .then(colors => console.log('✅ Colors:', colors))
-            .catch(error => console.error('❌ Colors error:', error));
-
-        getAllMaterials()
-            .then(materials => console.log('✅ Materials:', materials))
-            .catch(error => console.error('❌ Materials error:', error));
+            .then(data => {
+                // Prendre seulement les 6 premiers produits
+                setProducts(data.slice(0, 6));
+                setLoading(false);
+            })
+            .catch(err => {
+                setError(err.message);
+                setLoading(false);
+            });
     }, []);
 
+    if (loading) return <div className="loading">Chargement...</div>;
+    if (error) return <div className="error">Erreur : {error}</div>;
+
     return (
-        <div>
-            <h1>HomePage - Test API</h1>
-            <p>Ouvre la console (F12) pour voir les résultats !</p>
+        <div className="container">
+            <h1>Bienvenue chez Lauréline Meubles</h1>
+            <p style={{ fontSize: '18px', marginBottom: '30px', color: '#555' }}>
+                Découvrez notre sélection de meubles de qualité pour votre intérieur
+            </p>
+
+            <h2>Nos derniers produits</h2>
+
+            {products.length === 0 ? (
+                <div className="empty-message">Aucun produit disponible pour le moment.</div>
+            ) : (
+                <>
+                    <div className="grid-container">
+                        {products.map(product => (
+                            <ProductCard
+                                key={product.id}
+                                id={product.id}
+                                name={product.name}
+                                price={product.price}
+                                imageUrl={product.imageUrl}
+                                category={product.category}
+                            />
+                        ))}
+                    </div>
+
+                    <div style={{ textAlign: 'center', marginTop: '30px' }}>
+                        <Link to="/products" className="btn btn-primary">
+                            Voir tous nos produits
+                        </Link>
+                    </div>
+                </>
+            )}
         </div>
     );
 }

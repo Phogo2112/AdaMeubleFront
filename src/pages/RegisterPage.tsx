@@ -1,67 +1,93 @@
 // @ts-nocheck
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import { Link } from "react-router-dom";
+import '../styles/Forms.css';
 
 export function RegisterPage() {
-  const { register: registerUser } = useAuth(); // <- On récupère la fonction register du context
-  const [firstname, setFirstname] = useState("");
-  const [lastname, setLastname] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+    const { register: registerUser } = useAuth();
+    const [firstname, setFirstname] = useState("");
+    const [lastname, setLastname] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
+    const [success, setSuccess] = useState("");
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-    if (!firstname || !lastname || !email || !password) {
-      setError("Tous les champs sont obligatoires");
-      return;
-    }
+        if (!firstname || !lastname || !email || !password) {
+            setError("Tous les champs sont obligatoires");
+            return;
+        }
 
-    try {
-      await registerUser(firstname, lastname, email, password); // ✅ APPEL AU BACKEND
-      setSuccess("Compte créé avec succès !");
-      setError("");
-    } catch (err) {
-      console.error(err);
-      setError("Erreur lors de l'inscription");
-    }
-  };
+        try {
+            await registerUser(firstname, lastname, email, password);
+            setSuccess("Compte créé avec succès !");
+            setError("");
+        } catch (err) {
+            console.error(err);
+            setError("Erreur lors de l'inscription");
+        }
+    };
 
-  return (
-    <div>
-      <h2>Créer un compte</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {success && <p style={{ color: "green" }}>{success}</p>}
+    return (
+        <div className="form-page">
+            <h2>Créer un compte</h2>
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Prénom"
-          onChange={(e) => setFirstname(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Nom"
-          onChange={(e) => setLastname(e.target.value)}
-        />
-        <input
-          type="email"
-          placeholder="Email"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Mot de passe"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button type="submit">S'inscrire</button>
-      </form>
+            {error && <p className="error-message">{error}</p>}
+            {success && <p className="success-message">{success}</p>}
 
-      <p>
-        Déjà un compte ? <a href="/login">Connectez-vous ici</a>
-      </p>
-    </div>
-  );
+            <form onSubmit={handleSubmit}>
+                <div className="form-group">
+                    <label>Prénom</label>
+                    <input
+                        type="text"
+                        placeholder="Votre prénom"
+                        value={firstname}
+                        onChange={(e) => setFirstname(e.target.value)}
+                    />
+                </div>
+
+                <div className="form-group">
+                    <label>Nom</label>
+                    <input
+                        type="text"
+                        placeholder="Votre nom"
+                        value={lastname}
+                        onChange={(e) => setLastname(e.target.value)}
+                    />
+                </div>
+
+                <div className="form-group">
+                    <label>Email</label>
+                    <input
+                        type="email"
+                        placeholder="votre@email.com"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                </div>
+
+                <div className="form-group">
+                    <label>Mot de passe</label>
+                    <input
+                        type="password"
+                        placeholder="••••••••"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                </div>
+
+                <button type="submit" className="btn btn-primary btn-submit">
+                    S'inscrire
+                </button>
+            </form>
+
+            <p className="form-footer">
+                Déjà un compte ?{' '}
+                <Link to="/login">Connectez-vous ici</Link>
+            </p>
+        </div>
+    );
 }

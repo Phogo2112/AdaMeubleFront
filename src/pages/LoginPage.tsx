@@ -1,47 +1,64 @@
 // @ts-nocheck
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import '../styles/Forms.css';
 
 export function LoginPage() {
-  const { login } = useAuth();
-  const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+    const { login } = useAuth();
+    const navigate = useNavigate();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-    try {
-      await login(email, password); // ✅ Authentifie l'utilisateur
-      navigate("/"); // ✅ Redirection vers HomePage
-    } catch (err) {
-      console.error(err);
-      setError("Email ou mot de passe incorrect");
-    }
-  };
+        try {
+            await login(email, password);
+            navigate("/");
+        } catch (err) {
+            console.error(err);
+            setError("Email ou mot de passe incorrect");
+        }
+    };
 
-  return (
-    <div>
-      <h2>Connexion</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+    return (
+        <div className="form-page">
+            <h2>Connexion</h2>
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="Email"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Mot de passe"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button type="submit">Se connecter</button>
-        <br />
-        Créez un compte ? <a href="/register">Créez votre compte ici</a>
-      </form>
-    </div>
-  );
+            {error && <p className="error-message">{error}</p>}
+
+            <form onSubmit={handleSubmit}>
+                <div className="form-group">
+                    <label>Email</label>
+                    <input
+                        type="email"
+                        placeholder="votre@email.com"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                </div>
+
+                <div className="form-group">
+                    <label>Mot de passe</label>
+                    <input
+                        type="password"
+                        placeholder="••••••••"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                </div>
+
+                <button type="submit" className="btn btn-primary btn-submit">
+                    Se connecter
+                </button>
+            </form>
+
+            <p className="form-footer">
+                Pas encore de compte ?{' '}
+                <Link to="/register">Créez votre compte ici</Link>
+            </p>
+        </div>
+    );
 }
