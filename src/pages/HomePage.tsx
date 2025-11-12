@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-import { getAllProducts } from '../service/ProductService.ts';
-import { getAllCategories } from '../service/CategoryService.ts';
-import { getAllColors } from '../service/ColorService.ts';
-import { getAllMaterials } from '../service/MaterialService.ts';
+import { getAllProducts } from '../service/ProductService';
+import { getAllCategories } from '../service/CategoryService';
+import { getAllColors } from '../service/ColorService';
+import { getAllMaterials } from '../service/MaterialService';
 
 function HomePage() {
     useEffect(() => {
