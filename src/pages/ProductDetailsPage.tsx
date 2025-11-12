@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getProductById } from '../service/productService';
+import { getProductById } from '../service/ProductService';
 import { Product } from '../models/Product';
 
 function ProductDetailPage() {
@@ -19,7 +19,7 @@ function ProductDetailPage() {
                 setError(err.message);
                 setLoading(false);
             });
-    }, []);
+    }, [id]);
 
     if (loading) return <div className="loading">Chargement du produit...</div>;
     if (error) return <div className="error">Erreur : {error}</div>;

@@ -8,6 +8,8 @@ import {
 } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import HomePage from "./pages/HomePage";
+import ProductListPage from "./pages/ProductListPage";
+import ProductDetailsPage from "./pages/ProductDetailsPage";
 import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import './App.css'
@@ -28,6 +30,10 @@ function Content() {
 
   return (
     <Routes>
+        {/* Routes PUBLIQUES - accessibles par tous */}
+        <Route path="/products" element={<ProductListPage />} />
+        <Route path="/products/:id" element={<ProductDetailsPage />} />
+
       {!user ? (
         <>
           <Route path="*" element={<Navigate to="/login" />} />
