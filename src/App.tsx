@@ -1,4 +1,4 @@
-// @ts-nocheck
+
 import React from "react";
 import {
   BrowserRouter as Router,
@@ -12,8 +12,12 @@ import ProductListPage from "./pages/ProductListPage";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
 import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
+import { AdminProductsPage} from "./pages/AdminProductsPage";
 import './App.css'
 import Navbar from './components/Navbar';
+import { ProtectedAdminRoute } from './components/ProtectedAdminRoute';
+import { CreateProductPage } from "./pages/CreateProductPage";
+
 
 
 function App() {
@@ -36,11 +40,16 @@ function Content() {
             <Navbar />
             <Routes>
                 {/* Routes PUBLIQUES - accessibles par tous */}
-                <Route path="/" element={<HomePage />} />  {/* ← Déplacée ici */}
+                <Route path="/" element={<HomePage />} />
                 <Route path="/products" element={<ProductListPage />} />
                 <Route path="/products/:id" element={<ProductDetailsPage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />
+
+                <Route
+                    path="/admin/products/new"
+                    element={<ProtectedAdminRoute component={<CreateProductPage />} />}
+                />
 
                 {/* Routes conditionnelles selon l'état de connexion */}
                 {!user ? (
@@ -48,6 +57,10 @@ function Content() {
                 ) : (
                     <Route path="*" element={<Navigate to="/" />} />
                 )}
+                <Route
+                    path="/admin/products"
+                    element={<ProtectedAdminRoute component={<AdminProductsPage />} />}
+                />
             </Routes>
         </>
     );

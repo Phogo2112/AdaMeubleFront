@@ -1,4 +1,3 @@
-// src/models/Product.ts
 
 import {Category} from "./Category";
 import {Color} from "./Color";
@@ -13,6 +12,7 @@ export interface Product {
     dimensions: string;
     imageUrl: string;
     status: ProductStatus;
+    sku : string;
     createdByUserId: number | null;
     category: Category;
     colors: Array<Color>;

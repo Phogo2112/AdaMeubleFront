@@ -15,3 +15,13 @@ export const buyProduct = async (productId: number): Promise<Product> => {
     const response = await api.put(`/products/${productId}/buy`);
     return response.data;
 };
+
+export const getAllProductsForAdmin = async (): Promise<Product[]> => {
+    const response = await api.get('/admin/products');
+    return response.data;
+};
+
+export const createProduct = async (productData: any): Promise<Product> => {
+    const response = await api.post('/admin/products', productData);
+    return response.data;
+};
