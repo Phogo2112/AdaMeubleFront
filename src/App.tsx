@@ -16,6 +16,8 @@ import { AdminProductsPage} from "./pages/AdminProductsPage";
 import './App.css'
 import Navbar from './components/Navbar';
 import { ProtectedAdminRoute } from './components/ProtectedAdminRoute';
+import { CreateProductPage } from "./pages/CreateProductPage";
+
 
 
 function App() {
@@ -43,6 +45,11 @@ function Content() {
                 <Route path="/products/:id" element={<ProductDetailsPage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />
+
+                <Route
+                    path="/admin/products/new"
+                    element={<ProtectedAdminRoute component={<CreateProductPage />} />}
+                />
 
                 {/* Routes conditionnelles selon l'état de connexion */}
                 {!user ? (

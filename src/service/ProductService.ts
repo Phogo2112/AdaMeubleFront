@@ -20,3 +20,8 @@ export const getAllProductsForAdmin = async (): Promise<Product[]> => {
     const response = await api.get('/admin/products');
     return response.data;
 };
+
+export const createProduct = async (productData: any): Promise<Product> => {
+    const response = await api.post('/admin/products', productData);
+    return response.data;
+};

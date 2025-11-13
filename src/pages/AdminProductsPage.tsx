@@ -2,10 +2,14 @@ import { useState, useEffect } from 'react';
 import { getAllProductsForAdmin } from '../service/ProductService';
 import { Product } from '../models/Product';
 import '../styles/AdminProductsPage.css';
+import { useNavigate } from 'react-router-dom';
+
+
 
 
 export function AdminProductsPage() {
     const [productsState, setProductsState] = useState<Product[]>([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         getAllProductsForAdmin()
@@ -17,8 +21,7 @@ export function AdminProductsPage() {
         <div className="admin-products-container">
             <div className="admin-products-header">
                 <h1>Administration des produits</h1>
-                {/* Bouton pour créer un produit - à implémenter plus tard */}
-                {/* <button className="btn-create">+ Créer un produit</button> */}
+                {<button className="btn-create">+ Créer un produit</button> }
             </div>
 
             <table className="admin-products-table">
@@ -53,6 +56,7 @@ export function AdminProductsPage() {
                                 <button className="btn-action btn-edit">Modifier</button>
                                 <button className="btn-action btn-delete">Supprimer</button>
                             </div>
+
                         </td>
                     </tr>
                 ))}
