@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getProductById, buyProduct } from '../service/ProductService';
+import { Product } from '../models/Product';
 
 // Interfaces pour typer proprement
 interface Category {
@@ -16,18 +17,6 @@ interface Color {
 interface Material {
     id: number;
     name: string;
-}
-
-interface Product {
-    id: number;
-    name: string;
-    description: string;
-    price: number;
-    dimensions: string;
-    imageUrl: string;
-    category: Category;
-    colors: Color[];
-    materials: Material[];
 }
 
 function ProductDetailPage() {

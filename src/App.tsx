@@ -1,4 +1,4 @@
-// @ts-nocheck
+
 import React from "react";
 import {
   BrowserRouter as Router,
@@ -12,8 +12,10 @@ import ProductListPage from "./pages/ProductListPage";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
 import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
+import { AdminProductsPage} from "./pages/AdminProductsPage";
 import './App.css'
 import Navbar from './components/Navbar';
+import { ProtectedAdminRoute } from './components/ProtectedAdminRoute';
 
 
 function App() {
@@ -36,7 +38,7 @@ function Content() {
             <Navbar />
             <Routes>
                 {/* Routes PUBLIQUES - accessibles par tous */}
-                <Route path="/" element={<HomePage />} />  {/* ← Déplacée ici */}
+                <Route path="/" element={<HomePage />} />
                 <Route path="/products" element={<ProductListPage />} />
                 <Route path="/products/:id" element={<ProductDetailsPage />} />
                 <Route path="/login" element={<LoginPage />} />
@@ -48,6 +50,10 @@ function Content() {
                 ) : (
                     <Route path="*" element={<Navigate to="/" />} />
                 )}
+                <Route
+                    path="/admin/products"
+                    element={<ProtectedAdminRoute component={<AdminProductsPage />} />}
+                />
             </Routes>
         </>
     );
