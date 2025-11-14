@@ -25,11 +25,17 @@ export const createProduct = async (productData: any): Promise<Product> => {
   const response = await api.post("/products", productData); // ← Corrigé !
   return response.data;
 };
-
+export const deleteProduct = async (id: number): Promise<void> => {
+  await api.delete(`/products/${id}`);
+};
 export const updateProduct = async (
   id: number,
   productData: any
 ): Promise<Product> => {
   const response = await api.put(`/products/${id}`, productData);
+  return response.data;
+};
+export const getMyProducts = async (): Promise<Product[]> => {
+  const response = await api.get("/products/my-products");
   return response.data;
 };
