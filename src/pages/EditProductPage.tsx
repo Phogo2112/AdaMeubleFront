@@ -7,17 +7,16 @@ import { getAllMaterials } from '../service/MaterialService';
 import { Category } from '../models/Category';
 import { Color } from '../models/Color';
 import { Material } from '../models/Material';
-import '../styles/CreateProductPage.css'; // Réutilise le même CSS
-
-
+import '../styles/CreateProductPage.css';
 
 export function EditProductPage() {
-  // 🎯 ÉTAPE 1 : Récupération de l'ID depuis l'URL
-  // Si l'URL est /admin/products/edit/42, alors id = "42"
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
-  // 🎯 ÉTAPE 2 : État du formulaire (identique à CreateProductPage)
+  // ✅ AJOUTÉ : Détecte si on est en mode admin ou user
+  const isAdminContext = window.location.pathname.startsWith('/admin');
+  const backPath = isAdminContext ? '/admin/products' : '/my-products';
+
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -30,18 +29,13 @@ export function EditProductPage() {
     matiereIds: [] as number[]
   });
 
-  // 🎯 ÉTAPE 3 : États pour les listes déroulantes (catégories, couleurs, matières)
   const [categories, setCategories] = useState<Category[]>([]);
   const [colors, setColors] = useState<Color[]>([]);
   const [materials, setMaterials] = useState<Material[]>([]);
-
-  // 🎯 ÉTAPE 4 : États pour le chargement et les erreurs
   const [loading, setLoading] = useState(false);
-  const [loadingProduct, setLoadingProduct] = useState(true); // Nouveau : pour le chargement initial
+  const [loadingProduct, setLoadingProduct] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // 🎯 ÉTAPE 5 : useEffect n°1 - Charger les options du formulaire
-  // Ce useEffect charge les catégories, couleurs et matières (comme dans CreateProductPage)
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -61,8 +55,6 @@ export function EditProductPage() {
     fetchData();
   }, []);
 
-  // 🎯 ÉTAPE 6 : useEffect n°2 - Charger le produit à éditer
-  // Ce useEffect charge le produit spécifique et PRÉ-REMPLIT le formulaire
   useEffect(() => {
     const loadProduct = async () => {
       if (!id) {
@@ -73,22 +65,18 @@ export function EditProductPage() {
 
       try {
         setLoadingProduct(true);
-
-        // 📥 Appel GET pour récupérer le produit
         const product = await getProductById(Number(id));
 
-        // 🔄 TRANSFORMATIONS : Backend → Frontend
-        // On transforme les données du backend pour qu'elles correspondent au format du formulaire
         setFormData({
           name: product.name,
           description: product.description,
-          price: product.price.toString(), // number → string pour l'input
+          price: product.price.toString(),
           dimensions: product.dimensions,
-          imageUrls: [product.imageUrl], // string → tableau
+          imageUrls: [product.imageUrl],
           sku: product.sku,
-          categoryId: product.category.id.toString(), // objet → ID
-          couleurIds: product.colors.map(color => color.id), // objets → IDs
-          matiereIds: product.materials.map(material => material.id) // objets → IDs
+          categoryId: product.category.id.toString(),
+          couleurIds: product.colors.map(color => color.id),
+          matiereIds: product.materials.map(material => material.id)
         });
 
         setLoadingProduct(false);
@@ -100,9 +88,8 @@ export function EditProductPage() {
     };
 
     loadProduct();
-  }, [id]); // ⚠️ Important : se relance si l'ID change !
+  }, [id]);
 
-  // 🎯 ÉTAPE 7 : Gestion des changements dans les champs (identique à CreateProductPage)
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -111,7 +98,6 @@ export function EditProductPage() {
     }));
   };
 
-  // 🎯 ÉTAPE 8 : Gestion des couleurs (multi-select)
   const handleColorChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedOptions = Array.from(e.target.selectedOptions, option => Number(option.value));
     setFormData(prev => ({
@@ -120,7 +106,6 @@ export function EditProductPage() {
     }));
   };
 
-  // 🎯 ÉTAPE 9 : Gestion des matières (multi-select)
   const handleMaterialChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedOptions = Array.from(e.target.selectedOptions, option => Number(option.value));
     setFormData(prev => ({
@@ -129,15 +114,12 @@ export function EditProductPage() {
     }));
   };
 
-  // 🎯 ÉTAPE 10 : Soumission du formulaire
-  // ⚠️ DIFFÉRENCE MAJEURE avec CreateProductPage : on utilise updateProduct() au lieu de createProduct()
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
     try {
-      // 🔄 Préparation des données pour l'envoi
       const productData = {
         ...formData,
         price: Number(formData.price),
@@ -145,12 +127,10 @@ export function EditProductPage() {
         imageUrls: formData.imageUrls[0] ? [formData.imageUrls[0]] : []
       };
 
-      // 📤 Appel PUT pour modifier le produit
-      // ⚠️ Différence : on passe l'ID en premier paramètre !
       await updateProduct(Number(id), productData);
 
-      // ✅ Redirection après succès
-      navigate('/admin/products');
+      // ✅ MODIFIÉ : Redirection intelligente
+      navigate(backPath);
     } catch (err: any) {
       console.error('Erreur modification produit:', err);
       setError(err.response?.data?.message || 'Erreur lors de la modification du produit');
@@ -159,7 +139,6 @@ export function EditProductPage() {
     }
   };
 
-  // 🎯 ÉTAPE 11 : Affichage pendant le chargement initial
   if (loadingProduct) {
     return (
       <div className="create-product-container">
@@ -170,15 +149,14 @@ export function EditProductPage() {
     );
   }
 
-  // 🎯 ÉTAPE 12 : Rendu du formulaire (presque identique à CreateProductPage)
   return (
     <div className="create-product-container">
       <div className="create-product-header">
-        {/* ⚠️ Différence : titre "Modifier" au lieu de "Créer" */}
         <h1>Modifier le produit</h1>
+        {/* ✅ MODIFIÉ : Bouton retour intelligent */}
         <button
           className="btn-back"
-          onClick={() => navigate('/admin/products')}
+          onClick={() => navigate(backPath)}
         >
           ← Retour
         </button>
@@ -191,7 +169,6 @@ export function EditProductPage() {
       )}
 
       <form className="product-form" onSubmit={handleSubmit}>
-        {/* 📝 Section : Informations de base */}
         <div className="form-section">
           <h2>Informations de base</h2>
 
@@ -271,12 +248,11 @@ export function EditProductPage() {
               name="sku"
               value={formData.sku}
               onChange={handleInputChange}
-              disabled // ⚠️ Le SKU ne devrait pas être modifiable en édition
+              disabled
             />
           </div>
         </div>
 
-        {/* 📝 Section : Catégorisation */}
         <div className="form-section">
           <h2>Catégorisation</h2>
 
@@ -337,12 +313,12 @@ export function EditProductPage() {
           </div>
         </div>
 
-        {/* 🎯 Boutons d'action */}
         <div className="form-actions">
+          {/* ✅ MODIFIÉ : Bouton annuler intelligent */}
           <button
             type="button"
             className="btn-cancel"
-            onClick={() => navigate('/admin/products')}
+            onClick={() => navigate(backPath)}
             disabled={loading}
           >
             Annuler
@@ -352,7 +328,6 @@ export function EditProductPage() {
             className="btn-submit"
             disabled={loading}
           >
-            {/* ⚠️ Différence : texte "Modifier" au lieu de "Créer" */}
             {loading ? 'Modification en cours...' : 'Modifier le produit'}
           </button>
         </div>

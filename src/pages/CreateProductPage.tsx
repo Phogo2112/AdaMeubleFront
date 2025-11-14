@@ -234,11 +234,16 @@ export function CreateProductPage() {
                             onChange={handleColorChange}
                             className="multi-select"
                         >
-                            {colors.map(color => (
-                                <option key={color.id} value={color.id}>
-                                    {color.name}
-                                </option>
-                            ))}
+                            {/* ✅ Vérifie que colors est un tableau */}
+                            {Array.isArray(colors) && colors.length > 0 ? (
+                                colors.map(color => (
+                                    <option key={color.id} value={color.id}>
+                                        {color.name}
+                                    </option>
+                                ))
+                            ) : (
+                                <option disabled>Chargement des couleurs...</option>
+                            )}
                         </select>
                         <small>Maintenir Ctrl (ou Cmd) pour sélectionner plusieurs</small>
                     </div>
@@ -253,11 +258,16 @@ export function CreateProductPage() {
                             onChange={handleMaterialChange}
                             className="multi-select"
                         >
-                            {materials.map(material => (
-                                <option key={material.id} value={material.id}>
-                                    {material.name}
-                                </option>
-                            ))}
+                            {/* ✅ Vérifie que materials est un tableau */}
+                            {Array.isArray(materials) && materials.length > 0 ? (
+                                materials.map(material => (
+                                    <option key={material.id} value={material.id}>
+                                        {material.name}
+                                    </option>
+                                ))
+                            ) : (
+                                <option disabled>Chargement des matières...</option>
+                            )}
                         </select>
                         <small>Maintenir Ctrl (ou Cmd) pour sélectionner plusieurs</small>
                     </div>

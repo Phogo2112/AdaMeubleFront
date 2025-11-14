@@ -40,9 +40,17 @@ function Navbar() {
                     }}>
                         Tous nos produits
                     </Link>
-                    
+                    {isAuthenticated && (
+                        <Link to="/my-products" style={{
+                            color: 'white',
+                            textDecoration: 'none',
+                            padding: '8px 15px'
+                        }}>
+                            Mes produits
+                        </Link>
+                    )}
                     {isAuthenticated && user.role === 'ADMIN' && (
-                        <Link to="/admin/products" style={{color: 'white'}}>
+                        <Link to="/admin/products" style={{ color: 'white' }}>
                             Admin
                         </Link>
                     )}
