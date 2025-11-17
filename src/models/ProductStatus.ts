@@ -1,1 +1,1 @@
-export type ProductStatus = "DISPO" | "VENDU" | "EN_ATTENTE" | "REFUSE";
+export type ProductStatus = "ENABLED" | "DISABLED" | "PENDING" | "ON_HOLD" | "DENIED";

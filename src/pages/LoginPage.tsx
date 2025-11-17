@@ -1,4 +1,4 @@
-// @ts-nocheck
+
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext.tsx";
 import { useNavigate, Link } from "react-router-dom";
