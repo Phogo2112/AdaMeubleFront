@@ -5,6 +5,7 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
+
 import { AuthProvider, useAuth } from "./context/AuthContext.tsx";
 import HomePage from "./pages/HomePage";
 import ProductListPage from "./pages/ProductListPage";
@@ -58,6 +59,10 @@ function Content() {
         <Route
           path="/my-products"
           element={<ProtectedUserRoute component={<MyProductsPage />} />}
+        />
+        <Route
+          path="/preferences"
+          element={<ProtectedUserRoute component={<PreferencesPage />} />}
         />
         <Route
           path="/admin/products/pending"

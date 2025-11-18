@@ -61,6 +61,18 @@ function Navbar() {
                         </Link>
                     )}
                     {isAuthenticated && (
+                        <>
+
+                            <Link to="/preferences" style={{
+                                color: 'white',
+                                textDecoration: 'none',
+                                padding: '8px 15px'
+                            }}>
+                                ❤️ Mes favoris
+                            </Link>
+                        </>
+                    )}
+                    {isAuthenticated && (
                         <Link to="/preferences" style={{
                             color: 'white',
                             textDecoration: 'none',
