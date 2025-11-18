@@ -13,12 +13,15 @@ import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import { AdminProductsPage } from "./pages/AdminProductsPage";
 import { CreateProductPage } from "./pages/CreateProductPage";
-import { EditProductPage } from "./pages/EditProductPage"; // ✅ AJOUTE cet import
+import { EditProductPage } from "./pages/EditProductPage";
+import { ProposeProductPage } from "./pages/ProposeProductPage";
 import './App.css';
 import Navbar from './components/Navbar';
 import { ProtectedAdminRoute } from './components/ProtectedAdminRoute';
 import { ProtectedUserRoute } from "./components/ProtectedUserRoute.tsx";
 import { MyProductsPage } from "./pages/MyProductPage.tsx";
+import { AdminPendingProductsPage } from "./pages/AdminPendingProductsPage";
+import { PreferencesPage } from "./pages/PreferencesPage";
 
 function App() {
   return (
@@ -56,31 +59,42 @@ function Content() {
           path="/my-products"
           element={<ProtectedUserRoute component={<MyProductsPage />} />}
         />
-
-        {/* Créer un produit (vendre) */}
         <Route
-          path="/my-products/create"
-          element={<ProtectedUserRoute component={<CreateProductPage />} />}
+          path="/admin/products/pending"
+          element={<ProtectedAdminRoute component={<AdminPendingProductsPage />} />}
         />
 
+        <Route
+          path="/preferences"
+          element={<ProtectedUserRoute component={<PreferencesPage />} />}
+        />
+        <Route
+          path="/admin/products"
+          element={<ProtectedAdminRoute component={<AdminProductsPage />} />}
+        />
+        {/* Proposer un produit */}
+        <Route
+          path="/products/propose"
+          element={<ProtectedUserRoute component={<ProposeProductPage />} />}
+        />
         {/* Modifier MON produit */}
         <Route
           path="/my-products/edit/:id"
           element={<ProtectedUserRoute component={<EditProductPage />} />}
         />
-        {/* ✅ Route pour CRÉER un produit */}
+        {/* Route pour CRÉER un produit */}
         <Route
           path="/admin/products/create"
           element={<ProtectedAdminRoute component={<CreateProductPage />} />}
         />
 
-        {/* ✅ Route pour MODIFIER un produit (NOUVELLE !) */}
+        {/* Route pour MODIFIER un produit (NOUVELLE !) */}
         <Route
           path="/admin/products/edit/:id"
           element={<ProtectedAdminRoute component={<EditProductPage />} />}
         />
 
-        {/* ✅ Route pour LISTER les produits admin */}
+        {/* Route pour LISTER les produits admin */}
         <Route
           path="/admin/products"
           element={<ProtectedAdminRoute component={<AdminProductsPage />} />}

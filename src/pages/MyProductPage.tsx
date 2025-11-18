@@ -64,9 +64,9 @@ export function MyProductsPage() {
         <h1>Mes produits en vente</h1>
         <button
           className="btn-create"
-          onClick={() => navigate('/my-products/create')}
+          onClick={() => navigate('/products/propose')}
         >
-          + Mettre en vente
+          + Proposer un meuble
         </button>
       </div>
 

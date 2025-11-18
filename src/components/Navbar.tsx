@@ -31,6 +31,17 @@ function Navbar() {
                 }}>
                     Lauréline Meubles
                 </Link>
+                {isAuthenticated && user?.role === 'USER' && (
+                    <Link to="/products/propose" style={{
+                        color: 'white',
+                        textDecoration: 'none',
+                        padding: '8px 15px',
+                        backgroundColor: '#27ae60',
+                        borderRadius: '4px'
+                    }}>
+                        Proposer un meuble
+                    </Link>
+                )}
 
                 <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
                     <Link to="/products" style={{
@@ -49,10 +60,34 @@ function Navbar() {
                             Mes produits
                         </Link>
                     )}
-                    {isAuthenticated && user.role === 'ADMIN' && (
-                        <Link to="/admin/products" style={{ color: 'white' }}>
-                            Admin
+                    {isAuthenticated && (
+                        <Link to="/preferences" style={{
+                            color: 'white',
+                            textDecoration: 'none',
+                            padding: '8px 15px'
+                        }}>
+                            Mes préférences
                         </Link>
+                    )}
+                    {isAuthenticated && user.role === 'ADMIN' && (
+                        <>
+                            <Link to="/admin/products" style={{
+                                color: 'white',
+                                textDecoration: 'none',
+                                padding: '8px 15px'
+                            }}>
+                                Tous les produits
+                            </Link>
+                            <Link to="/admin/products/pending" style={{
+                                color: 'white',
+                                textDecoration: 'none',
+                                padding: '8px 15px',
+                                backgroundColor: '#e67e22',
+                                borderRadius: '4px'
+                            }}>
+                                En attente
+                            </Link>
+                        </>
                     )}
 
                     {user ? (
