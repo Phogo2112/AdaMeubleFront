@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getAllProductsForAdmin, deleteProduct } from '../service/ProductService';
+import { getAllProductsForAdmin, deleteProductAsAdmin } from '../service/ProductService';
 import { Product } from '../models/Product';
 import '../styles/AdminProductsPage.css';
 import { useNavigate } from 'react-router-dom';
@@ -29,7 +29,6 @@ export function AdminProductsPage() {
         }
     };
 
-    // ✅ Fonction pour supprimer un produit
     const handleDelete = async (id: number) => {
         if (!window.confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')) {
             return;
@@ -38,9 +37,8 @@ export function AdminProductsPage() {
         console.log('🗑️ [ADMIN] Suppression du produit ID:', id);
 
         try {
-            await deleteProduct(id);
+            await deleteProductAsAdmin(id);
             console.log('✅ [ADMIN] Produit supprimé avec succès');
-            // Recharger la liste après suppression
             loadProducts();
         } catch (err: any) {
             console.error("❌ [ADMIN] Erreur suppression:", err);
@@ -56,6 +54,53 @@ export function AdminProductsPage() {
             </div>
         );
     }
+    const handleValidate = async (id: number) => {
+        if (!window.confirm('Valider ce produit et le mettre en ligne ?')) {
+            return;
+        }
+
+        console.log('✅ [ADMIN] Validation du produit ID:', id);
+
+        try {
+            await fetch(`http://localhost:8080/api/admin/products/${id}/validate`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            console.log('✅ [ADMIN] Produit validé avec succès');
+            loadProducts(); // Recharger la liste
+        } catch (err: any) {
+            console.error("❌ [ADMIN] Erreur validation:", err);
+            alert("Erreur lors de la validation");
+        }
+    };
+
+    const handleReject = async (id: number) => {
+        if (!window.confirm('Refuser ce produit ?')) {
+            return;
+        }
+
+        console.log('❌ [ADMIN] Refus du produit ID:', id);
+
+        try {
+            await fetch(`http://localhost:8080/api/admin/products/${id}/reject`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            console.log('✅ [ADMIN] Produit refusé');
+            loadProducts(); // Recharger la liste
+        } catch (err: any) {
+            console.error("❌ [ADMIN] Erreur refus:", err);
+            alert("Erreur lors du refus");
+        }
+    };
 
     return (
         <div className="admin-products-container">
@@ -116,6 +161,41 @@ export function AdminProductsPage() {
                                     >
                                         Supprimer
                                     </button>
+                                    {product.status === 'PENDING' && (
+                                        <>
+                                            <button
+                                                className="btn-action btn-validate"
+                                                onClick={() => handleValidate(product.id)}
+                                            >
+                                                Valider
+                                            </button>
+                                            <button
+                                                className="btn-action btn-reject"
+                                                onClick={() => handleReject(product.id)}
+                                            >
+                                                Refuser
+                                            </button>
+                                            <div style={{ display: 'flex', gap: '10px' }}>
+
+                                                <button
+                                                    className="btn-create"
+                                                    onClick={() => navigate('/admin/products/pending')}
+                                                    style={{ backgroundColor: '#f39c12' }}
+                                                >
+                                                    🕐 Produits en attente
+                                                </button>
+
+                                                <button
+                                                    className="btn-create"
+                                                    onClick={() => navigate('/admin/products/create')}
+                                                >
+                                                    + Créer un produit
+                                                </button>
+                                            </div>
+                                        </>
+
+                                    )}
+
                                 </div>
                             </td>
                         </tr>

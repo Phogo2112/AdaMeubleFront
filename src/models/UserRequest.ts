@@ -1,4 +1,3 @@
-// UserRequest.ts
 export interface UserRequest {
   id: number;
   userId: number;
@@ -6,7 +5,6 @@ export interface UserRequest {
   colorId?: number;
   materialId?: number;
 
-  // Relations (optionnelles, pour l'affichage)
   category?: {
     id: number;
     name: string;
@@ -21,7 +19,6 @@ export interface UserRequest {
   };
 }
 
-// DTO pour créer une préférence
 export interface CreateUserRequestDTO {
   categoryId?: number;
   colorId?: number;

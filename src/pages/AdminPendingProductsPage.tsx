@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getPendingProducts } from '../service/ProductService';
 import { Product } from '../models/Product';
-import '../styles/AdminProductsPage.css'; // Réutilise le même CSS
+import '../styles/AdminProductsPage.css';
 
 export function AdminPendingProductsPage() {
   const navigate = useNavigate();
@@ -13,114 +14,84 @@ export function AdminPendingProductsPage() {
     loadPendingProducts();
   }, []);
 
-  // 🎭 FONCTION MOCKÉE : Charge les produits en attente
   const loadPendingProducts = async () => {
     try {
       setLoading(true);
-
-      // 🎭 DONNÉES MOCKÉES (temporaires - à remplacer par l'API plus tard)
-      const mockData: Product[] = [
-        {
-          id: 1,
-          name: "Canapé vintage en cuir",
-          description: "Magnifique canapé 3 places",
-          price: 450,
-          dimensions: "200x90x85 cm",
-          imageUrl: "https://via.placeholder.com/250",
-          status: "PENDING",
-          sku: "SKU-12345",
-          createdByUserId: 5,
-          category: { id: 1, name: "Salon" },
-          colors: [{ id: 1, name: "Marron" }],
-          materials: [{ id: 1, name: "Cuir" }]
-        },
-        {
-          id: 2,
-          name: "Bureau en chêne massif",
-          description: "Bureau avec 3 tiroirs",
-          price: 280,
-          dimensions: "140x70x75 cm",
-          imageUrl: "https://via.placeholder.com/250",
-          status: "PENDING",
-          sku: "SKU-67890",
-          createdByUserId: 7,
-          category: { id: 3, name: "Bureau" },
-          colors: [{ id: 2, name: "Chêne naturel" }],
-          materials: [{ id: 2, name: "Chêne massif" }]
-        },
-        {
-          id: 3,
-          name: "Table basse scandinave",
-          description: "Design épuré et moderne",
-          price: 120,
-          dimensions: "100x60x45 cm",
-          imageUrl: "https://via.placeholder.com/250",
-          status: "PENDING",
-          sku: "SKU-11111",
-          createdByUserId: 5,
-          category: { id: 1, name: "Salon" },
-          colors: [{ id: 3, name: "Blanc" }],
-          materials: [{ id: 3, name: "MDF" }]
-        }
-      ];
-
-      // Simule un délai réseau
-      await new Promise(resolve => setTimeout(resolve, 500));
-
-      setProductsState(mockData);
+      const data = await getPendingProducts();
+      setProductsState(data);
       setError(null);
     } catch (err: any) {
       console.error("Erreur:", err);
-      setError("Erreur lors du chargement des produits en attente");
+      setError(err.response?.data?.message || "Erreur lors du chargement des produits en attente");
     } finally {
       setLoading(false);
     }
   };
 
-  // 🎭 FONCTION MOCKÉE : Valider un produit
   const handleValidate = async (id: number, name: string) => {
     if (!window.confirm(`Êtes-vous sûr de vouloir VALIDER le produit "${name}" ?`)) {
       return;
     }
 
-    console.log('✅ [MOCK] Validation du produit ID:', id);
+    console.log('✅ [ADMIN] Validation du produit ID:', id);
 
     try {
-      // 🎭 SIMULATION : Appel API futur
-      // await api.put(`/api/products/${id}/validate`);
+      const token = localStorage.getItem('token');
 
-      // Pour l'instant, on retire juste le produit de la liste
-      await new Promise(resolve => setTimeout(resolve, 300)); // Simule l'appel réseau
+      const response = await fetch(`http://localhost:8080/api/admin/products/${id}/validate`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
 
-      setProductsState(productsState.filter(p => p.id !== id));
-      alert(`✅ Produit "${name}" validé avec succès !`);
+      if (!response.ok) {
+        throw new Error('Erreur lors de la validation');
+      }
+
+      console.log('✅ [ADMIN] Produit validé avec succès');
+
+      loadPendingProducts();
+
+      alert(`✅ Produit "${name}" validé et mis en ligne !`);
 
     } catch (err: any) {
-      console.error("Erreur validation:", err);
+      console.error("❌ Erreur validation:", err);
       alert("Erreur lors de la validation");
     }
   };
 
-  // 🎭 FONCTION MOCKÉE : Refuser un produit
   const handleReject = async (id: number, name: string) => {
     if (!window.confirm(`Êtes-vous sûr de vouloir REFUSER le produit "${name}" ?`)) {
       return;
     }
 
-    console.log('❌ [MOCK] Refus du produit ID:', id);
+    console.log('❌ [ADMIN] Refus du produit ID:', id);
 
     try {
-      // 🎭 SIMULATION : Appel API futur
-      // await api.put(`/api/products/${id}/reject`);
+      const token = localStorage.getItem('token');
 
-      // Pour l'instant, on retire juste le produit de la liste
-      await new Promise(resolve => setTimeout(resolve, 300)); // Simule l'appel réseau
+      const response = await fetch(`http://localhost:8080/api/admin/products/${id}/reject`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
 
-      setProductsState(productsState.filter(p => p.id !== id));
+      if (!response.ok) {
+        throw new Error('Erreur lors du refus');
+      }
+
+      console.log('✅ [ADMIN] Produit refusé');
+
+      loadPendingProducts();
+
       alert(`❌ Produit "${name}" refusé.`);
 
     } catch (err: any) {
-      console.error("Erreur refus:", err);
+      console.error("❌ Erreur refus:", err);
       alert("Erreur lors du refus");
     }
   };
@@ -136,7 +107,7 @@ export function AdminPendingProductsPage() {
   return (
     <div className="admin-products-container">
       <div className="admin-products-header">
-        <h1>Produits en attente de validation</h1>
+        <h1>🕐 Produits en attente de validation</h1>
         <button
           className="btn-back"
           onClick={() => navigate('/admin/products')}
@@ -163,11 +134,15 @@ export function AdminPendingProductsPage() {
         <div style={{
           textAlign: 'center',
           padding: '40px',
-          color: '#666',
-          fontSize: '18px'
+          backgroundColor: '#f8f9fa',
+          borderRadius: '8px',
+          margin: '20px 0'
         }}>
-          <p>✅ Aucun produit en attente de validation !</p>
-          <p style={{ fontSize: '14px', marginTop: '10px' }}>
+          <div style={{ fontSize: '64px', marginBottom: '20px' }}>✅</div>
+          <h2 style={{ color: '#27ae60', marginBottom: '10px' }}>
+            Aucun produit en attente !
+          </h2>
+          <p style={{ fontSize: '16px', color: '#666' }}>
             Les nouveaux produits proposés par les utilisateurs apparaîtront ici.
           </p>
         </div>
@@ -181,7 +156,7 @@ export function AdminPendingProductsPage() {
               <th className="col-name">Nom</th>
               <th className="col-price">Prix</th>
               <th className="col-status">Status</th>
-              <th className="col-actions" style={{ width: '200px' }}>Actions</th>
+              <th className="col-actions" style={{ width: '220px' }}>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -196,28 +171,22 @@ export function AdminPendingProductsPage() {
                 <td className="col-price">{product.price}€</td>
                 <td className="col-status">
                   <span className="status-badge status-pending">
-                    {product.status}
+                    ⏳ {product.status}
                   </span>
                 </td>
                 <td className="col-actions">
-                  <div className="action-buttons">
+                  <div className="action-buttons" style={{ gap: '8px' }}>
                     <button
                       className="btn-action btn-validate"
                       onClick={() => handleValidate(product.id, product.name)}
-                      style={{
-                        backgroundColor: '#27ae60',
-                        color: 'white'
-                      }}
+                      title="Valider et mettre en ligne"
                     >
                       ✅ Valider
                     </button>
                     <button
                       className="btn-action btn-reject"
                       onClick={() => handleReject(product.id, product.name)}
-                      style={{
-                        backgroundColor: '#e74c3c',
-                        color: 'white'
-                      }}
+                      title="Refuser ce produit"
                     >
                       ❌ Refuser
                     </button>

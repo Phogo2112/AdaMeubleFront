@@ -37,7 +37,7 @@ function ProductCard({ id, name, price, imageUrl, category }: ProductCardProps) 
     };
 
     const handleToggleFavorite = async (e: React.MouseEvent) => {
-        e.preventDefault(); // Empêche la navigation vers le détail
+        e.preventDefault();
 
         if (loading) return;
 

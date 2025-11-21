@@ -5,6 +5,7 @@ import '../styles/AdminProductsPage.css'; // Réutilise le même CSS
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
+
 export function MyProductsPage() {
   const [productsState, setProductsState] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
@@ -21,6 +22,7 @@ export function MyProductsPage() {
     try {
       setLoading(true);
       const data = await getMyProducts();
+      console.log("getMyProducts() retourne :", data);
       setProductsState(data);
     } catch (err: any) {
       console.error("Erreur:", err);
@@ -102,38 +104,42 @@ export function MyProductsPage() {
             </tr>
           </thead>
           <tbody>
-            {productsState.map((product) => (
-              <tr key={product.id}>
-                <td className="col-id">{product.id}</td>
-                <td className="col-sku">{product.sku}</td>
-                <td className="col-category">
-                  {product.category ? product.category.name : 'N/A'}
-                </td>
-                <td className="col-name">{product.name}</td>
-                <td className="col-price">{product.price}€</td>
-                <td className="col-status">
-                  <span className={`status-badge status-${product.status.toLowerCase()}`}>
-                    {product.status}
-                  </span>
-                </td>
-                <td className="col-actions">
-                  <div className="action-buttons">
-                    <button
-                      className="btn-action btn-edit"
-                      onClick={() => navigate(`/my-products/edit/${product.id}`)}
-                    >
-                      Modifier
-                    </button>
-                    <button
-                      className="btn-action btn-delete"
-                      onClick={() => handleDelete(product.id)}
-                    >
-                      Supprimer
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
+            {Array.isArray(productsState) && productsState.length > 0 ? (
+              productsState.map((product) => (
+                <tr key={product.id}>
+                  <td className="col-id">{product.id}</td>
+                  <td className="col-sku">{product.sku}</td>
+                  <td className="col-category">
+                    {product.category ? product.category.name : 'N/A'}
+                  </td>
+                  <td className="col-name">{product.name}</td>
+                  <td className="col-price">{product.price}€</td>
+                  <td className="col-status">
+                    <span className={`status-badge status-${product.status.toLowerCase()}`}>
+                      {product.status}
+                    </span>
+                  </td>
+                  <td className="col-actions">
+                    <div className="action-buttons">
+                      <button
+                        className="btn-action btn-edit"
+                        onClick={() => navigate(`/my-products/edit/${product.id}`)}
+                      >
+                        Modifier
+                      </button>
+                      <button
+                        className="btn-action btn-delete"
+                        onClick={() => handleDelete(product.id)}
+                      >
+                        Supprimer
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr><td colSpan={7}>Aucun produit trouvé</td></tr>
+            )}
           </tbody>
         </table>
       )}

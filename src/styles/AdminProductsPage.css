@@ -1,7 +1,3 @@
-/* ================================
-   ADMIN PRODUCTS PAGE - STYLES
-   ================================ */
-
 /* Container principal */
 .admin-products-container {
     max-width: 1400px;
@@ -278,8 +274,13 @@
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 /* Responsive */

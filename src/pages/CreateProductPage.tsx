@@ -8,6 +8,7 @@ import { Category } from '../models/Category';
 import { Color } from '../models/Color';
 import { Material } from '../models/Material';
 import '../styles/CreateProductPage.css';
+import { createProductAsAdmin } from '../service/ProductService';
 
 export function CreateProductPage() {
     const navigate = useNavigate();
@@ -87,9 +88,16 @@ export function CreateProductPage() {
                 imageUrls: formData.imageUrls[0] ? [formData.imageUrls[0]] : []
             };
 
-            await createProduct(productData);
+            const isAdminContext = window.location.pathname.startsWith('/admin');
 
-            navigate('/admin/products');
+            if (isAdminContext) {
+                await createProductAsAdmin(productData);
+            } else {
+                await createProduct(productData);
+            }
+
+            const backPath = isAdminContext ? '/admin/products' : '/my-products';
+            navigate(backPath);
         } catch (err: any) {
             console.error('Erreur création produit:', err);
             setError(err.response?.data?.message || 'Erreur lors de la création du produit');
