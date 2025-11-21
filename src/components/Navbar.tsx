@@ -15,21 +15,17 @@ function Navbar() {
     return (
         <nav className="navbar">
             <div className="navbar-container">
-                {/* Logo / Nom du site */}
                 <Link to="/" className="navbar-logo">
                     <span className="logo-icon">🪑</span>
                     <span className="logo-text">Lauréline Meubles</span>
                 </Link>
 
-                {/* Navigation principale */}
                 <div className="navbar-menu">
-                    {/* Lien public */}
                     <Link to="/products" className="navbar-link">
                         <span className="link-icon">📦</span>
                         <span>Tous nos produits</span>
                     </Link>
 
-                    {/* Liens pour utilisateur connecté */}
                     {isAuthenticated && (
                         <>
                             <Link to="/my-products" className="navbar-link">
@@ -43,7 +39,6 @@ function Navbar() {
                         </>
                     )}
 
-                    {/* Lien Admin */}
                     {isAuthenticated && user?.role === 'ADMIN' && (
                         <Link to="/admin/products" className="navbar-link navbar-link-admin">
                             <span className="link-icon">👑</span>
@@ -52,7 +47,6 @@ function Navbar() {
                     )}
                 </div>
 
-                {/* Section utilisateur */}
                 <div className="navbar-user">
                     {user ? (
                         <>

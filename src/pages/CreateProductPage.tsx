@@ -125,7 +125,6 @@ export function CreateProductPage() {
             )}
 
             <form className="product-form" onSubmit={handleSubmit}>
-                {/* Informations de base */}
                 <div className="form-section">
                     <h2>Informations de base</h2>
 
@@ -140,7 +139,6 @@ export function CreateProductPage() {
                             required
                         />
                     </div>
-
                     <div className="form-group">
                         <label htmlFor="description">Description *</label>
                         <textarea
@@ -152,7 +150,6 @@ export function CreateProductPage() {
                             required
                         />
                     </div>
-
                     <div className="form-row">
                         <div className="form-group">
                             <label htmlFor="price">Prix (€) *</label>
@@ -167,7 +164,6 @@ export function CreateProductPage() {
                                 required
                             />
                         </div>
-
                         <div className="form-group">
                             <label htmlFor="dimensions">Dimensions *</label>
                             <input
@@ -181,7 +177,6 @@ export function CreateProductPage() {
                             />
                         </div>
                     </div>
-
                     <div className="form-group">
                         <label htmlFor="imageUrls">URL de l'image</label>
                         <input
@@ -210,7 +205,6 @@ export function CreateProductPage() {
                     </div>
                 </div>
 
-                {/* Catégorisation */}
                 <div className="form-section">
                     <h2>Catégorisation</h2>
 
@@ -242,7 +236,6 @@ export function CreateProductPage() {
                             onChange={handleColorChange}
                             className="multi-select"
                         >
-                            {/* ✅ Vérifie que colors est un tableau */}
                             {Array.isArray(colors) && colors.length > 0 ? (
                                 colors.map(color => (
                                     <option key={color.id} value={color.id}>
