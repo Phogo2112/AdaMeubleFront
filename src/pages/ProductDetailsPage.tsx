@@ -1,7 +1,7 @@
 "use client"
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getProductById, buyProduct } from '../service/ProductService';
+import { getProductById } from '../service/ProductService';
 import { Product } from '../models/Product';
 
 // Interfaces pour typer proprement
@@ -30,13 +30,8 @@ function ProductDetailPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    // États pour l'achat
-    const [buyLoading, setBuyLoading] = useState(false);
-    const [buySuccess, setBuySuccess] = useState(false);
-    const [buyError, setBuyError] = useState<string | null>(null);
-
-    // Fonction pour gérer l'achat
-    const handleBuyProduct = async () => {
+    // Fonction pour rediriger vers la page de paiement Stripe
+    const handleBuyClick = () => {
         // Vérifier si l'utilisateur est connecté
         const token = localStorage.getItem('token');
         if (!token) {
@@ -44,23 +39,8 @@ function ProductDetailPage() {
             return;
         }
 
-        setBuyLoading(true);
-        setBuyError(null);
-
-        try {
-            await buyProduct(Number(id));
-            setBuySuccess(true);
-        } catch (err: any) {
-            if (err.response?.status === 409) {
-                setBuyError("Ce produit n'est plus disponible");
-            } else if (err.response?.status === 401) {
-                navigate('/login');
-            } else {
-                setBuyError("Une erreur est survenue lors de l'achat");
-            }
-        } finally {
-            setBuyLoading(false);
-        }
+        // Rediriger vers la page de paiement
+        navigate(`/payment/${id}`);
     };
 
     // Chargement du produit au montage du composant
@@ -108,14 +88,11 @@ function ProductDetailPage() {
             </div>
 
             <button
-                onClick={handleBuyProduct}
-                disabled={buySuccess || buyLoading}
-                className={buySuccess ? 'btn btn-success' : 'btn btn-primary'}
+                className="btn-buy"
+                onClick={handleBuyClick}
             >
-                {buyLoading ? 'Achat en cours...' : buySuccess ? 'Produit acheté !' : 'Acheter'}
+                Acheter maintenant
             </button>
-
-            {buyError && <p className="error-message">{buyError}</p>}
         </div>
     );
 }

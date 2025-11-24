@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-// @ts-ignore
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
-import { initiatePayment, confirmPayment } from '../service/PaymentService.ts';
+import { initiatePayment, confirmPayment } from '../service/PaymentService';
 import { PaymentMethod } from '../models/PaymentMethod';
 import '../styles/CheckoutForm.css';
 
@@ -12,7 +11,6 @@ interface CheckoutFormProps {
     onCancel: () => void;
 }
 
-// @ts-ignore
 export const CheckoutForm: React.FC<CheckoutFormProps> = ({
                                                               productId,
                                                               amount,
@@ -79,6 +77,7 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({
                 <label>Informations de carte bancaire</label>
                 <CardElement
                     options={{
+                        hidePostalCode: true,
                         style: {
                             base: {
                                 fontSize: '16px',
