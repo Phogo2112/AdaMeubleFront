@@ -17,7 +17,7 @@ export const buyProduct = async (productId: number): Promise<Product> => {
 };
 
 export const getAllProductsForAdmin = async (): Promise<Product[]> => {
-  const response = await api.get("/products/admin"); // ← Corrigé !
+  const response = await api.get("/admin/products"); // ← Corrigé !
   return response.data;
 };
 
@@ -37,5 +37,18 @@ export const updateProduct = async (
 };
 export const getMyProducts = async (): Promise<Product[]> => {
   const response = await api.get("/products/my-products");
+  return response.data;
+};
+export const deleteProductAsAdmin = async (id: number): Promise<void> => {
+  await api.delete(`/admin/products/${id}`);
+};
+export const getPendingProducts = async (): Promise<Product[]> => {
+  const response = await api.get("/admin/products/pending");
+  return response.data;
+};
+export const createProductAsAdmin = async (
+  productData: any
+): Promise<Product> => {
+  const response = await api.post("/admin/products", productData);
   return response.data;
 };

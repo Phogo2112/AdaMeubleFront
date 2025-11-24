@@ -8,6 +8,7 @@ import { Category } from '../models/Category';
 import { Color } from '../models/Color';
 import { Material } from '../models/Material';
 import '../styles/CreateProductPage.css';
+import { createProductAsAdmin } from '../service/ProductService';
 
 export function CreateProductPage() {
     const navigate = useNavigate();
@@ -87,9 +88,16 @@ export function CreateProductPage() {
                 imageUrls: formData.imageUrls[0] ? [formData.imageUrls[0]] : []
             };
 
-            await createProduct(productData);
+            const isAdminContext = window.location.pathname.startsWith('/admin');
 
-            navigate('/admin/products');
+            if (isAdminContext) {
+                await createProductAsAdmin(productData);
+            } else {
+                await createProduct(productData);
+            }
+
+            const backPath = isAdminContext ? '/admin/products' : '/my-products';
+            navigate(backPath);
         } catch (err: any) {
             console.error('Erreur création produit:', err);
             setError(err.response?.data?.message || 'Erreur lors de la création du produit');
@@ -117,7 +125,6 @@ export function CreateProductPage() {
             )}
 
             <form className="product-form" onSubmit={handleSubmit}>
-                {/* Informations de base */}
                 <div className="form-section">
                     <h2>Informations de base</h2>
 
@@ -132,7 +139,6 @@ export function CreateProductPage() {
                             required
                         />
                     </div>
-
                     <div className="form-group">
                         <label htmlFor="description">Description *</label>
                         <textarea
@@ -144,7 +150,6 @@ export function CreateProductPage() {
                             required
                         />
                     </div>
-
                     <div className="form-row">
                         <div className="form-group">
                             <label htmlFor="price">Prix (€) *</label>
@@ -159,7 +164,6 @@ export function CreateProductPage() {
                                 required
                             />
                         </div>
-
                         <div className="form-group">
                             <label htmlFor="dimensions">Dimensions *</label>
                             <input
@@ -173,7 +177,6 @@ export function CreateProductPage() {
                             />
                         </div>
                     </div>
-
                     <div className="form-group">
                         <label htmlFor="imageUrls">URL de l'image</label>
                         <input
@@ -202,7 +205,6 @@ export function CreateProductPage() {
                     </div>
                 </div>
 
-                {/* Catégorisation */}
                 <div className="form-section">
                     <h2>Catégorisation</h2>
 
@@ -234,7 +236,6 @@ export function CreateProductPage() {
                             onChange={handleColorChange}
                             className="multi-select"
                         >
-                            {/* ✅ Vérifie que colors est un tableau */}
                             {Array.isArray(colors) && colors.length > 0 ? (
                                 colors.map(color => (
                                     <option key={color.id} value={color.id}>
