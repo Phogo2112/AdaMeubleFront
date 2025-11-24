@@ -1,6 +1,8 @@
 import React from "react";
+import { ProtectedUserRoute } from "./components/ProtectedUserRoute";
+import { ProtectedAdminRoute } from "./components/ProtectedAdminRoute";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { AuthProvider, useAuth } from "./context/AuthContext.tsx";
+import { AuthProvider, useAuth } from "./context/AuthContext";
 
 import HomePage from "./pages/HomePage";
 import ProductListPage from "./pages/ProductListPage";
@@ -8,8 +10,8 @@ import ProductDetailsPage from "./pages/ProductDetailsPage";
 import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
 
-import { MyProductsPage } from "./pages/MyProductPage.tsx";
-import { PreferencesPage } from "./pages/PreferencesPage.tsx";
+import { MyProductsPage } from "./pages/MyProductPage";
+import { PreferencesPage } from "./pages/PreferencesPage";
 import { CreateProductPage } from "./pages/CreateProductPage";
 import { EditProductPage } from "./pages/EditProductPage";
 
@@ -18,8 +20,11 @@ import { AdminPendingProductsPage } from "./pages/AdminPendingProductsPage";
 
 import './App.css';
 import Navbar from './components/Navbar';
-import { ProtectedAdminRoute } from './components/ProtectedAdminRoute';
-import { ProtectedUserRoute } from "./components/ProtectedUserRoute.tsx";
+
+
+import { PaymentPage } from "./pages/PaymentPage";
+import { PaymentSuccessPage } from "./pages/PaymentSuccessPage";
+import { PaymentHistoryPage } from "./pages/PaymentHistoryPage";
 
 function App() {
   return (
@@ -47,7 +52,19 @@ function Content() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
 
-
+          {/* Routes de paiement */}
+          <Route
+              path="/payment/:productId"
+              element={<ProtectedUserRoute component={<PaymentPage />} />}
+          />
+          <Route
+              path="/payment-success"
+              element={<ProtectedUserRoute component={<PaymentSuccessPage />} />}
+          />
+          <Route
+              path="/payments"
+              element={<ProtectedUserRoute component={<PaymentHistoryPage />} />}
+          />
         <Route
           path="/my-products"
           element={<ProtectedUserRoute component={<MyProductsPage />} />}
