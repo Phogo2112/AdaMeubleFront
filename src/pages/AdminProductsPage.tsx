@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getAllProductsForAdmin, deleteProductAsAdmin } from '../service/ProductService';
+import { getAllProductsForAdmin, deleteProductAsAdmin, rejectProduct, validateProduct } from '../service/ProductService';
 import { Product } from '../models/Product';
 import '../styles/AdminProductsPage.css';
 import { useNavigate } from 'react-router-dom';
@@ -14,7 +14,6 @@ export function AdminProductsPage() {
         loadProducts();
     }, []);
 
-    // ✅ Fonction pour charger les produits
     const loadProducts = async () => {
         try {
             setLoading(true);
@@ -62,16 +61,9 @@ export function AdminProductsPage() {
         console.log('✅ [ADMIN] Validation du produit ID:', id);
 
         try {
-            await fetch(`http://localhost:8080/api/admin/products/${id}/validate`, {
-                method: 'PUT',
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                    'Content-Type': 'application/json'
-                }
-            });
-
+            await validateProduct(id)
             console.log('✅ [ADMIN] Produit validé avec succès');
-            loadProducts(); // Recharger la liste
+            loadProducts();
         } catch (err: any) {
             console.error("❌ [ADMIN] Erreur validation:", err);
             alert("Erreur lors de la validation");
@@ -82,20 +74,12 @@ export function AdminProductsPage() {
         if (!window.confirm('Refuser ce produit ?')) {
             return;
         }
-
         console.log('❌ [ADMIN] Refus du produit ID:', id);
-
         try {
-            await fetch(`http://localhost:8080/api/admin/products/${id}/reject`, {
-                method: 'PUT',
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                    'Content-Type': 'application/json'
-                }
-            });
+            await rejectProduct(id);
 
             console.log('✅ [ADMIN] Produit refusé');
-            loadProducts(); // Recharger la liste
+            loadProducts();
         } catch (err: any) {
             console.error("❌ [ADMIN] Erreur refus:", err);
             alert("Erreur lors du refus");

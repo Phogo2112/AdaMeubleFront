@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { getMyProducts, deleteProduct } from '../service/ProductService';
 import { Product } from '../models/Product';
-import '../styles/AdminProductsPage.css'; // Réutilise le même CSS
+import '../styles/AdminProductsPage.css';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
@@ -12,8 +12,6 @@ export function MyProductsPage() {
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const { user } = useAuth();
-
-  // Charger MES produits au montage du composant
   useEffect(() => {
     loadMyProducts();
   }, []);
