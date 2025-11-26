@@ -313,7 +313,6 @@
     padding: 8px 10px;
   }
 
-  /* Sur très petit écran, afficher seulement les icônes */
   .navbar-link span:not(.link-icon),
   .navbar-btn span:not(.btn-icon) {
     display: none;

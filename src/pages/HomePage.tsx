@@ -22,7 +22,6 @@ function HomePage() {
     useEffect(() => {
         getAllProducts()
             .then(data => {
-                // Prendre seulement les 6 premiers produits
                 setProducts(data.slice(0, 6));
                 setLoading(false);
             })

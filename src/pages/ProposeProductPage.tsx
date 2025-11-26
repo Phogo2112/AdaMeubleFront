@@ -90,10 +90,8 @@ export function ProposeProductPage() {
 
       await createProduct(productData);
 
-      // ✅ MODIFICATION 1 : Message de succès personnalisé
       setSuccessMessage('Votre meuble a été proposé et est en attente de validation');
 
-      // ✅ MODIFICATION 2 : Redirection vers /my-products après 2 secondes
       setTimeout(() => {
         navigate('/my-products');
       }, 2000);
@@ -109,9 +107,7 @@ export function ProposeProductPage() {
   return (
     <div className="create-product-container">
       <div className="create-product-header">
-        {/* ✅ MODIFICATION 3 : Titre différent */}
         <h1>Proposer un meuble</h1>
-        {/* ✅ MODIFICATION 4 : Bouton retour vers /my-products */}
         <button
           className="btn-back"
           onClick={() => navigate('/my-products')}
@@ -126,7 +122,6 @@ export function ProposeProductPage() {
         </div>
       )}
 
-      {/* ✅ AJOUT 2 : Message de succès */}
       {successMessage && (
         <div className="success-message" style={{
           backgroundColor: '#d4edda',
@@ -141,7 +136,6 @@ export function ProposeProductPage() {
       )}
 
       <form className="product-form" onSubmit={handleSubmit}>
-        {/* Informations de base */}
         <div className="form-section">
           <h2>Informations de base</h2>
 
@@ -226,7 +220,6 @@ export function ProposeProductPage() {
           </div>
         </div>
 
-        {/* Catégorisation */}
         <div className="form-section">
           <h2>Catégorisation</h2>
 
@@ -295,9 +288,7 @@ export function ProposeProductPage() {
           </div>
         </div>
 
-        {/* Boutons */}
         <div className="form-actions">
-          {/* ✅ MODIFICATION 5 : Bouton annuler vers /my-products */}
           <button
             type="button"
             className="btn-cancel"
@@ -306,7 +297,6 @@ export function ProposeProductPage() {
           >
             Annuler
           </button>
-          {/* ✅ MODIFICATION 6 : Texte du bouton */}
           <button
             type="submit"
             className="btn-submit"

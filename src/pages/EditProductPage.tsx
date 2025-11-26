@@ -13,7 +13,6 @@ export function EditProductPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
-  // ✅ AJOUTÉ : Détecte si on est en mode admin ou user
   const isAdminContext = window.location.pathname.startsWith('/admin');
   const backPath = isAdminContext ? '/admin/products' : '/my-products';
 

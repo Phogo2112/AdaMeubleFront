@@ -17,12 +17,12 @@ export const buyProduct = async (productId: number): Promise<Product> => {
 };
 
 export const getAllProductsForAdmin = async (): Promise<Product[]> => {
-  const response = await api.get("/admin/products"); // ← Corrigé !
+  const response = await api.get("/admin/products");
   return response.data;
 };
 
 export const createProduct = async (productData: any): Promise<Product> => {
-  const response = await api.post("/products", productData); // ← Corrigé !
+  const response = await api.post("/products", productData);
   return response.data;
 };
 export const deleteProduct = async (id: number): Promise<void> => {
@@ -50,5 +50,14 @@ export const createProductAsAdmin = async (
   productData: any
 ): Promise<Product> => {
   const response = await api.post("/admin/products", productData);
+  return response.data;
+};
+export const validateProduct = async (id: number): Promise<Product> => {
+  const response = await api.put(`/admin/products/${id}/validate`);
+  return response.data;
+};
+
+export const rejectProduct = async (id: number): Promise<Product> => {
+  const response = await api.put(`/admin/products/${id}/reject`);
   return response.data;
 };

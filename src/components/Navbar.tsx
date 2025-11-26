@@ -40,19 +40,20 @@ function Navbar() {
                     )}
 
                     {isAuthenticated && user?.role === 'ADMIN' && (
-                        <Link to="/admin/products" className="navbar-link navbar-link-admin">
-                            <span className="link-icon">👑</span>
-                            <span>Admin</span>
-                        </Link>
+                        <>
+                            <Link to="/admin/products" className="navbar-link navbar-link-admin">
+                                <span className="link-icon">👑</span>
+                                <span>Admin</span>
+                            </Link>
+                        </>
                     )}
                 </div>
+
 
                 <div className="navbar-user">
                     {user ? (
                         <>
-                            <span className="navbar-welcome">
-                                Bonjour, <strong>{user.firstname}</strong>
-                            </span>
+
                             <button
                                 onClick={handleLogout}
                                 className="navbar-btn navbar-btn-logout"

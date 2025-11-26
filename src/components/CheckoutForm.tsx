@@ -12,11 +12,11 @@ interface CheckoutFormProps {
 }
 
 export const CheckoutForm: React.FC<CheckoutFormProps> = ({
-                                                              productId,
-                                                              amount,
-                                                              onSuccess,
-                                                              onCancel
-                                                          }) => {
+    productId,
+    amount,
+    onSuccess,
+    onCancel
+}) => {
     const stripe = useStripe();
     const elements = useElements();
     const [error, setError] = useState<string | null>(null);
@@ -33,13 +33,11 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({
         setError(null);
 
         try {
-            // 1. Créer le paiement côté backend (réserve le produit)
             const payment = await initiatePayment({
                 productId,
                 paymentMethod: PaymentMethod.CARD
             });
 
-            // 2. Créer le token Stripe côté client
             const cardElement = elements.getElement(CardElement);
             if (!cardElement) {
                 throw new Error('Card element not found');
@@ -54,10 +52,8 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({
                 throw new Error(stripeError.message);
             }
 
-            // 3. Confirmer le paiement côté backend
             await confirmPayment(payment.transactionId);
 
-            // 4. Succès !
             onSuccess();
 
         } catch (err: any) {

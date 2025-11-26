@@ -1,10 +1,7 @@
 import api from "../api/axiosConfig";
 import { UserRequest, CreateUserRequestDTO } from "../models/UserRequest";
 
-// 🎭 MOCK : Récupérer mes préférences
 export const getMyPreferences = async (): Promise<UserRequest[]> => {
-  // 🎭 DONNÉES MOCKÉES (temporaires)
-  // Plus tard : const response = await api.get('/api/user-requests/my-preferences');
 
   const mockData: UserRequest[] = [
     {
@@ -29,26 +26,19 @@ export const getMyPreferences = async (): Promise<UserRequest[]> => {
     },
   ];
 
-  // Simule un délai réseau
   await new Promise((resolve) => setTimeout(resolve, 300));
   return mockData;
 };
 
-// 🎭 MOCK : Ajouter une préférence
 export const addPreference = async (
   data: CreateUserRequestDTO
 ): Promise<UserRequest> => {
-  // 🎭 SIMULATION
-  // Plus tard : const response = await api.post('/api/user-requests', data);
-
   console.log("🎭 [MOCK] Ajout préférence:", data);
 
-  // Simule la réponse du backend
   const newPreference: UserRequest = {
     id: Math.floor(Math.random() * 1000),
     userId: 5,
     ...data,
-    // Ces infos viendraient normalement du backend
     category: data.categoryId
       ? { id: data.categoryId, name: "Catégorie" }
       : undefined,
@@ -62,11 +52,7 @@ export const addPreference = async (
   return newPreference;
 };
 
-// 🎭 MOCK : Supprimer une préférence
 export const deletePreference = async (id: number): Promise<void> => {
-  // 🎭 SIMULATION
-  // Plus tard : await api.delete(`/api/user-requests/${id}`);
-
   console.log("🎭 [MOCK] Suppression préférence ID:", id);
   await new Promise((resolve) => setTimeout(resolve, 300));
 };
