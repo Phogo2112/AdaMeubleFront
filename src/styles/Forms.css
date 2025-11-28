@@ -13,7 +13,6 @@
     color: #2c3e50;
 }
 
-/* === FORM GROUPS === */
 .form-group {
     margin-bottom: 20px;
 }
@@ -39,7 +38,6 @@
     border-color: #3498db;
 }
 
-/* === MESSAGES === */
 .error-message {
     color: white;
     background-color: #e74c3c;
@@ -58,13 +56,11 @@
     text-align: center;
 }
 
-/* === SUBMIT BUTTON === */
 .btn-submit {
     width: 100%;
     margin-top: 10px;
 }
 
-/* === FOOTER TEXT === */
 .form-footer {
     text-align: center;
     margin-top: 20px;

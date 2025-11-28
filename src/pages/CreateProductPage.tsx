@@ -259,7 +259,6 @@ export function CreateProductPage() {
                             onChange={handleMaterialChange}
                             className="multi-select"
                         >
-                            {/* ✅ Vérifie que materials est un tableau */}
                             {Array.isArray(materials) && materials.length > 0 ? (
                                 materials.map(material => (
                                     <option key={material.id} value={material.id}>
@@ -274,7 +273,6 @@ export function CreateProductPage() {
                     </div>
                 </div>
 
-                {/* Boutons */}
                 <div className="form-actions">
                     <button
                         type="button"

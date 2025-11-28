@@ -1,4 +1,3 @@
-// src/context/AuthContext.tsx
 import React, { createContext, useContext, useState, useEffect, ReactNode, } from 'react';
 import { login as loginService, logout as logoutService, getUserFromToken, User } from '../service/authService';
 
@@ -20,7 +19,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
 
-    // ✅ Au chargement, récupérer l'utilisateur depuis le JWT
     useEffect(() => {
         const currentUser = getUserFromToken();
         setUser(currentUser);

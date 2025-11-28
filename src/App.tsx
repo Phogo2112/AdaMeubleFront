@@ -52,19 +52,18 @@ function Content() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
 
-          {/* Routes de paiement */}
-          <Route
-              path="/payment/:productId"
-              element={<ProtectedUserRoute component={<PaymentPage />} />}
-          />
-          <Route
-              path="/payment-success"
-              element={<ProtectedUserRoute component={<PaymentSuccessPage />} />}
-          />
-          <Route
-              path="/payments"
-              element={<ProtectedUserRoute component={<PaymentHistoryPage />} />}
-          />
+        <Route
+          path="/payment/:productId"
+          element={<ProtectedUserRoute component={<PaymentPage />} />}
+        />
+        <Route
+          path="/payment-success"
+          element={<ProtectedUserRoute component={<PaymentSuccessPage />} />}
+        />
+        <Route
+          path="/payments"
+          element={<ProtectedUserRoute component={<PaymentHistoryPage />} />}
+        />
         <Route
           path="/my-products"
           element={<ProtectedUserRoute component={<MyProductsPage />} />}

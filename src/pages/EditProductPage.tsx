@@ -128,7 +128,6 @@ export function EditProductPage() {
 
       await updateProduct(Number(id), productData);
 
-      // ✅ MODIFIÉ : Redirection intelligente
       navigate(backPath);
     } catch (err: any) {
       console.error('Erreur modification produit:', err);
@@ -152,7 +151,6 @@ export function EditProductPage() {
     <div className="create-product-container">
       <div className="create-product-header">
         <h1>Modifier le produit</h1>
-        {/* ✅ MODIFIÉ : Bouton retour intelligent */}
         <button
           className="btn-back"
           onClick={() => navigate(backPath)}
@@ -313,7 +311,6 @@ export function EditProductPage() {
         </div>
 
         <div className="form-actions">
-          {/* ✅ MODIFIÉ : Bouton annuler intelligent */}
           <button
             type="button"
             className="btn-cancel"

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { getMyPreferences, removePreference } from '../service/PreferenceService';
 import { Preference } from '../models/Preference';
 import { Link } from 'react-router-dom';
-import '../styles/AdminProductsPage.css'; // On réutilise les styles existants
+import '../styles/AdminProductsPage.css';
 
 export function PreferencesPage() {
   const [preferences, setPreferences] = useState<Preference[]>([]);
@@ -34,7 +34,7 @@ export function PreferencesPage() {
     try {
       await removePreference(productId);
       console.log('✅ Produit retiré des favoris');
-      loadPreferences(); // Recharger la liste
+      loadPreferences();
     } catch (err: any) {
       console.error('❌ Erreur:', err);
       alert('Erreur lors de la suppression');

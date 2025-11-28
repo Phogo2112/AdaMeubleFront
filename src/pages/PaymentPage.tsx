@@ -33,12 +33,10 @@ export const PaymentPage: React.FC = () => {
     }, [productId]);
 
     const handleSuccess = () => {
-        // Rediriger vers une page de confirmation
         navigate('/payment-success');
     };
 
     const handleCancel = () => {
-        // Retour à la page du produit
         navigate(`/products/${productId}`);
     };
 

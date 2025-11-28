@@ -57,9 +57,6 @@
     margin: 0;
 }
 
-.payment-form-container {
-    /* Le formulaire a déjà son propre style */
-}
 
 .loading {
     text-align: center;

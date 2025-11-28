@@ -1,7 +1,3 @@
-/* ================================
-   NAVBAR - HARMONISÉ AVEC APP.CSS
-   ================================ */
-
 .navbar {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
@@ -22,9 +18,6 @@
   gap: 30px;
 }
 
-/* ================================
-   LOGO
-   ================================ */
 
 .navbar-logo {
   color: white;
@@ -62,9 +55,6 @@
   background-clip: text;
 }
 
-/* ================================
-   MENU NAVIGATION
-   ================================ */
 
 .navbar-menu {
   display: flex;
@@ -117,9 +107,6 @@
   box-shadow: 0 6px 20px rgba(240, 147, 251, 0.6);
 }
 
-/* ================================
-   SECTION UTILISATEUR
-   ================================ */
 
 .navbar-user {
   display: flex;
@@ -145,9 +132,6 @@
   font-weight: 700;
 }
 
-/* ================================
-   BOUTONS
-   ================================ */
 
 .navbar-btn {
   padding: 10px 20px;
@@ -210,9 +194,6 @@
   box-shadow: 0 6px 20px rgba(235, 51, 73, 0.5);
 }
 
-/* ================================
-   ANIMATIONS
-   ================================ */
 
 @keyframes slideDown {
   from {
@@ -230,9 +211,6 @@
   animation: slideDown 0.5s ease;
 }
 
-/* ================================
-   RESPONSIVE MOBILE
-   ================================ */
 
 @media (max-width: 1024px) {
   .navbar-container {
@@ -291,7 +269,6 @@
     text-align: center;
   }
 
-  /* Masquer les textes, garder seulement les icônes sur très petit écran */
   .navbar-link span:not(.link-icon),
   .navbar-btn span:not(.btn-icon) {
     display: inline;
