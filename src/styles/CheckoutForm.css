@@ -1,0 +1,126 @@
+.checkout-form {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 30px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.form-header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.form-header h2 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+    font-size: 24px;
+}
+
+.amount {
+    font-size: 28px;
+    font-weight: bold;
+    color: #27ae60;
+    margin: 0;
+}
+
+.card-element-wrapper {
+    margin-bottom: 25px;
+}
+
+.card-element-wrapper label {
+    display: block;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.card-element-wrapper .StripeElement {
+    padding: 15px;
+    border: 2px solid #ecf0f1;
+    border-radius: 8px;
+    background: white;
+    transition: border-color 0.3s;
+}
+
+.card-element-wrapper .StripeElement--focus {
+    border-color: #3498db;
+}
+
+.card-element-wrapper .StripeElement--invalid {
+    border-color: #e74c3c;
+}
+
+.error-message {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 12px 15px;
+    border-radius: 8px;
+    border-left: 4px solid #e74c3c;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.btn-cancel,
+.btn-pay {
+    flex: 1;
+    padding: 15px 25px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-cancel {
+    background: #95a5a6;
+    color: white;
+}
+
+.btn-cancel:hover:not(:disabled) {
+    background: #7f8c8d;
+}
+
+.btn-pay {
+    background: #27ae60;
+    color: white;
+}
+
+.btn-pay:hover:not(:disabled) {
+    background: #229954;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+}
+
+.btn-cancel:disabled,
+.btn-pay:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+    .checkout-form {
+        padding: 20px;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .btn-cancel,
+    .btn-pay {
+        width: 100%;
+    }
+}

@@ -1,0 +1,1 @@
+export type ProductStatus = "ENABLED" | "DISABLED" | "PENDING" | "ON_HOLD" | "DENIED";
