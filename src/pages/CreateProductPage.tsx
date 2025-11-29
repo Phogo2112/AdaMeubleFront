@@ -81,11 +81,15 @@ export function CreateProductPage() {
         setError(null);
 
         try {
+            const imageUrl = formData.imageUrls[0]?.trim()
+                ? formData.imageUrls[0]
+                : "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.hemea.com%2Ffr%2Fdecoration-agencement%2Fmeuble-sur-mesure&psig=AOvVaw3pCPqWyRu13ORaJbRqcENw&ust=1764500980756000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCOiyi8Scl5EDFQAAAAAdAAAAABAL";
+
             const productData = {
                 ...formData,
                 price: Number(formData.price),
                 categoryId: Number(formData.categoryId),
-                imageUrls: formData.imageUrls[0] ? [formData.imageUrls[0]] : []
+                imageUrls: [imageUrl]
             };
 
             const isAdminContext = window.location.pathname.startsWith('/admin');
