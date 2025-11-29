@@ -1,11 +1,12 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode, } from 'react';
-import { login as loginService, logout as logoutService, getUserFromToken, User } from '../service/authService';
+import { login as loginService, logout as logoutService, register as registerService, getUserFromToken, User, } from '../service/authService';
 
 interface AuthContextType {
     user: User | null;
     isAuthenticated: boolean;
     loading: boolean;
     login: (email: string, password: string) => Promise<void>;
+    register: (firstname: string, lastname: string, email: string, password: string) => Promise<void>;
     logout: () => void;
 }
 
@@ -34,7 +35,20 @@ export function AuthProvider({ children }: AuthProviderProps) {
             throw error;
         }
     };
-
+    const register = async (
+        firstname: string,
+        lastname: string,
+        email: string,
+        password: string
+    ) => {
+        try {
+            const user = await registerService(firstname, lastname, email, password);
+            setUser(user);
+        } catch (error) {
+            console.error('Erreur inscription:', error);
+            throw error;
+        }
+    };
     const logout = () => {
         logoutService();
         setUser(null);
@@ -46,6 +60,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
                 user,
                 isAuthenticated: !!user,
                 loading,
+                register,
                 login,
                 logout,
             }}
